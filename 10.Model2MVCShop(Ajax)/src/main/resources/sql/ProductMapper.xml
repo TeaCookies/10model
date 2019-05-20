@@ -59,16 +59,8 @@
 										FROM product p, transaction t
 											<where>
 												p.prod_no = t.prod_no(+) 
-												<if test="searchCondition != null">
-													<if test="searchCondition == 0 and searchKeyword !='' ">
-											 			AND p.prod_no = #{searchKeyword}
-													</if>
-													<if test="searchCondition == 1 and searchKeyword !='' ">
-											 			AND prod_name LIKE '%'||#{searchKeyword}||'%'
-													</if>
-													<if test="searchCondition == 2 and searchKeyword !='' ">
-											 			AND price = #{searchKeyword}
-													</if> 
+												<if test="searchKeyword != null">
+										 		AND prod_name LIKE '%'||#{searchKeyword}||'%'
 												</if>
 											</where>
 											ORDER BY p.prod_no ) inner_table
@@ -92,19 +84,11 @@
 	  	FROM(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, p.reg_date, t.tran_status_code 	
 						FROM product p, transaction t
 						<where>
-							p.prod_no = t.prod_no(+) 
-							<if test="searchCondition != null">
-								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			AND p.prod_no = #{searchKeyword}
-								</if>
-								<if test="searchCondition == 1 and searchKeyword !='' ">
-									AND prod_name = #{searchKeyword}
-								</if>
-								<if test="searchCondition == 2 and searchKeyword !='' ">
-									AND price = #{searchKeyword}
+							p.prod_no = t.prod_no(+) 		
+								<if test="searchKeyword !=null ">
+						 		AND prod_name LIKE '%'||#{searchKeyword}||'%'
 								</if> 
-							</if> 
-						</where>) countTable						
+						</where> ) countTable						
 	 </select>
 	 
 </mapper>

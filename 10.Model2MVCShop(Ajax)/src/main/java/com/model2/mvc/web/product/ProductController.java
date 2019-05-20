@@ -1,5 +1,6 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -78,13 +80,11 @@ public class ProductController {
 		System.out.println("/product/addProduct : POST");
 
 		//Business Logic
-		//product.setFileName(UploadFile.saveFile(mtfRequest.getFile("file"),uploadPath));
+		product.setFileName(UploadFile.saveFile(mtfRequest.getFile("file"),uploadPath));
 		productService.addProduct(product);
 		
 		return "forward:/product/readProduct.jsp";
 	}
-	
-	
 	
 	
 	//@RequestMapping("/getProduct.do")
@@ -143,10 +143,19 @@ public class ProductController {
 	
 	//@RequestMapping("/updateProduct.do")
 	@RequestMapping( value="updateProduct" , method=RequestMethod.POST)
-	public String updateProduct( @ModelAttribute("product") Product product, Model model) throws Exception{
+	public String updateProduct( @ModelAttribute("product") Product product, Model model,
+																					MultipartHttpServletRequest mtfRequest) throws Exception{
 
 		System.out.println("/product/updateProduct : POST");
+		
 		//Business Logic
+		product.setFileName(UploadFile.saveFile(mtfRequest.getFile("file"),uploadPath));
+		boolean fileName = product.getFileName().endsWith("_");
+
+		if ( fileName ) {
+			product.setFileName((productService.getProduct(product.getProdNo())).getFileName());
+		}
+		
 		productService.updateProduct(product);
 		product = productService.getProduct(product.getProdNo());
 		
@@ -169,6 +178,7 @@ public class ProductController {
 		}
 		
 		search.setPageSize(pageSize);
+		System.out.println("■■■■■ 검색어 확인 : "+search.getSearchKeyword());
 		
 		// Business logic 수행
 		Map<String , Object> map=productService.getProductList(search);

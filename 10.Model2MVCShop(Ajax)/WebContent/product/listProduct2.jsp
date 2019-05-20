@@ -38,11 +38,11 @@
 		
 		});
 		
-		$( "#price:contains('가격')" ).on("click" , function() {
-			self.location ="/product/listProduct?menu=${param.menu}";
-			console.log ( "/product/listProduct?menu=${param.menu}");
-		});
-				
+//		$( "td:contains('배송하기')" ).on("click" , function() {
+//			self.location ="/purchase/updateTranCode?prodNo="+$(this).parent().children("td:nth-child(3)").children().val()+"&tranCode="+$(this).parent().children("td:nth-child(9)").children().val();
+//			console.log ( "확인1 :: "+$(this).parent().children("td:nth-child(3)").children().val() );
+//		});
+			
 			
 	 });	
 	
@@ -88,7 +88,11 @@
 			style="margin-top: 10px;">
 			<tr>
 				<td align="right">
-
+					<select name="searchCondition" class="ct_input_g" style="width: 80px">
+						<option value="0" ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>상품번호</option>
+						<option value="1" ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>상품명</option>
+						<option value="2" ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>상품가격</option>
+					</select>
 					<input type="text" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : "" }" class="ct_input_g" 
 							style="width: 200px; height: 20px"></td>
 				<td align="right" width="70">
@@ -114,11 +118,6 @@
 				</td>
 			</tr>
 			<tr>
-				<td id="price" colspan="11">
-					가격
-				</td>
-			</tr>
-			<tr>
 				<td class="ct_list_b" width="100">No</td>
 				<td class="ct_line02"></td>
 				<td class="ct_list_b" width="150">상품명</td>
@@ -141,13 +140,13 @@
 			<tr class="ct_list_pop">
 				<td align="center">${ i }</td>
 				<td></td>
-				<td align="center">${product.prodName} 
+				<td align="left">${product.prodName} 
 					<input type="hidden" value="${product.prodNo}"/>
 				</td>
 				<td></td>
-				<td align="right">${product.price}원</td>
+				<td align="left">${product.price}원</td>
 				<td></td>
-				<td align="center">${product.manuDate}</td>
+				<td align="left">${product.manuDate}</td>
 				<td></td>
 				<td align="left">
 					<input type="hidden" value="${product.proTranCode}"/>

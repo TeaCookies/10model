@@ -66,7 +66,7 @@
 	<!--  :: 파일 업로드 경로 설정 -->	
 	<bean id="uploadPath" class="java.lang.String">
 		<constructor-arg 
-				value="C:\Users\bitcamp\git\09model\09.Model2MVCShop(jQuery)\WebContent\images\uploadFiles\"/>
+				value="C:\Users\USER\git\10model\10.Model2MVCShop(Ajax)\WebContent\images\uploadFiles\"/>
 	</bean>
 	
 	

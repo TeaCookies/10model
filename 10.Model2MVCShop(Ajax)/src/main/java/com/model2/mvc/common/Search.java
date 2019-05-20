@@ -15,7 +15,16 @@ public class Search {
 	//==> ÂüÁ¶
 	private int endRowNum;
 	private int startRowNum;
+	private String highPrice;
 	
+	public String getHighPrice() {
+		return highPrice;
+	}
+
+	public void setHighPrice(String highPrice) {
+		this.highPrice = highPrice;
+	}
+
 	///Constructor
 	public Search() {
 	}

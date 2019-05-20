@@ -21,7 +21,9 @@
 			console.log ( "prodNo :: "+$(this).parent().children("td:nth-child(5)").children().val());
 			console.log ( "tranCode :: "+$(this).parent().children("td:nth-child(7)").children().val());
 		});
+	});
 		
+	$(function() {
 		//구매날짜 클릭
 		$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
 		//	self.location ="/purchase/getPurchase?tranNo="+$(this).children().val();
@@ -30,7 +32,7 @@
 		
 		//$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
 			//Debug..
-			//alert(  $( this ).text().trim() );
+			//alert( $(this).children().val());
 			
 			//////////////////////////// 추가 , 변경된 부분 ///////////////////////////////////
 			//self.location ="/user/getUser?userId="+$(this).text().trim();
@@ -38,7 +40,7 @@
 			var tranNo = $(this).children().val();
 			$.ajax( 
 					{
-						url : "/purchase/getPurchase/"+tranNo ,
+						url : "/purchase/json/getPurchase/"+tranNo ,
 						method : "GET" ,
 						dataType : "json" ,
 						headers : {
@@ -46,6 +48,11 @@
 							"Content-Type" : "application/json"
 						},
 						success : function(JSONData , status) {
+							
+							//Debug...
+							//alert(status);
+							//Debug...
+							//alert("JSONData : \n"+JSONData);
 
 							var displayValue = "<h3>"
 														+"상품번호 : "+JSONData.purchaseProd.prodNo+"<br/>"
@@ -61,11 +68,12 @@
 							//Debug...									
 							//alert(displayValue);
 							$("h3").remove();
-							$( "#"+userId+"" ).html(displayValue);
+							$( "#"+tranNo+"" ).html(displayValue);
 						}
 				});
 			
 	});
+	
 		
 		//상품명 클릭
 		$( ".ct_list_pop td:nth-child(5)" ).on("click" , function() {
@@ -137,7 +145,7 @@
 						<tr class="ct_list_pop">
 						<td align="center">${ i }</a></td>
 						<td></td>
-						<td align="center">${purchase.orderDate}-${purchase.tranNo}
+						<td align="center">${purchase.tranNo}
 							<input type="hidden" name="tranNo" value="${purchase.tranNo}"/></td>
 						<td></td>
 						<td align="center" >${purchase.purchaseProd.prodName }
@@ -186,7 +194,10 @@
 					</tr>
 	
 					<tr>
+						<!-- //////////////////////////// 추가 , 변경된 부분 /////////////////////////////
 						<td colspan="11" bgcolor="D6D7D6" height="1"></td>
+						////////////////////////////////////////////////////////////////////////////////////////////  -->
+						<td id="${purchase.tranNo}" colspan="11" bgcolor="D6D7D6" height="1"></td>
 					</tr>
 				</c:forEach>
 			</table>
