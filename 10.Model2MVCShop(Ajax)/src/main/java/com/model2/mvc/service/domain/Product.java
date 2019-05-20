@@ -18,7 +18,16 @@ public class Product {
 	private Date regDate;
 	private String proTranCode;
 	private MultipartFile upload;
+	private int prodQuantity;
 	
+	public int getProdQuantity() {
+		return prodQuantity;
+	}
+
+	public void setProdQuantity(int prodQuantity) {
+		this.prodQuantity = prodQuantity;
+	}
+
 	public MultipartFile getUpload() {
 		return upload;
 	}

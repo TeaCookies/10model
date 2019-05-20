@@ -18,6 +18,7 @@ public interface ProductDao {
 	
 	//UPDATE
 	public void updateProduct(Product product) throws Exception;
+	public void updateProdQuantity(Product product) throws Exception;
 	
 	// 게시판 Page 처리를 위한 전체Row(totalCount)  return
 	public int getTotalCount(Search search) throws Exception ;

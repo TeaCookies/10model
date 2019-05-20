@@ -20,4 +20,6 @@ public interface ProductService {
 	//상품 정보 수정
 	public void updateProduct(Product productVO) throws Exception;
 	
+	public void updateProdQuantity(Product productVO) throws Exception;
+	
 }

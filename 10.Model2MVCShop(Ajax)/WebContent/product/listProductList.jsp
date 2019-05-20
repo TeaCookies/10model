@@ -21,8 +21,8 @@
 		});
 		
 	//	$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
-//				self.location ="/product/listProductList?prodNo="+$(this).children().val();
-//				console.log ( $(this).children().val() );
+	//			self.location ="/product/getProduct?prodNo="+$(this).children().val()+"&menu=${param.menu}";
+	//			console.log ( $(this).children().val() );
 	//			console.log (":::"+ $( ".ct_list_pop td:nth-child(9)").html() );
 	//	});
 		

@@ -151,7 +151,7 @@
 						<tr>
 							
 							
-								<c:if test="${(product.proTranCode eq null )&&  param.menu eq 'search'}">
+								<c:if test="${(product.prodQuantity != 0 )&&  param.menu eq 'search'}">
 								
 									<td width="17" height="23"><img src="/images/ct_btnbg01.gif"
 										width="17" height="23" /></td>

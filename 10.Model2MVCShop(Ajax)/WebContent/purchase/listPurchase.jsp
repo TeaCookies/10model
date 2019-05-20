@@ -57,6 +57,7 @@
 							var displayValue = "<h3>"
 														+"상품번호 : "+JSONData.purchaseProd.prodNo+"<br/>"
 														+"상품명 : "+JSONData.purchaseProd.prodName+"<br/>"
+														+"구매 개수 : "+JSONData.tranQuantity+"<br/>"
 														+"구매방법 : "+JSONData.paymentOption+"<br/>"
 														+"구매자이름 : "+JSONData.receiverName+"<br/>"
 														+"구매자연락처 : "+JSONData.receiverPhone+"<br/>"
@@ -65,6 +66,7 @@
 														+"배송희망일 : "+JSONData.divyDate+"<br/>"
 														+"주문일 : "+JSONData.orderDate+"<br/>"
 														+"</h3>";
+														
 							//Debug...									
 							//alert(displayValue);
 							$("h3").remove();
@@ -129,6 +131,8 @@
 					<td class="ct_line02"></td>
 					<td class="ct_list_b" width="150">상품명</td>
 					<td class="ct_line02"></td>
+					<td class="ct_list_b" width="50">수량</td>
+					<td class="ct_line02"></td>
 					<td class="ct_list_b" width="100">가격</td>
 					<td class="ct_line02"></td>
 					<td class="ct_list_b">주문현황</td>
@@ -150,6 +154,8 @@
 						<td></td>
 						<td align="center" >${purchase.purchaseProd.prodName }
 							<input type="hidden" name="prodNo" value="${purchase.purchaseProd.prodNo}"/></td>
+						<td></td>
+							<td align="center"> ${purchase.tranQuantity }개
 						<td></td>
 						<td align="center"> ${purchase.purchaseProd.price }원
 							<input type="hidden" name="tranCode" value="${purchase.tranCode}"/></td>

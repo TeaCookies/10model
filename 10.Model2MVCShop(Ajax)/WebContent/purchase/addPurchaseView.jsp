@@ -18,16 +18,31 @@
 
 <script type="text/javascript">
 
-	function fncAddPurchase() {		
+	function fncAddPurchase(){
+		//Form 유효성 검증
+	 	//var name = document.detailForm.prodName.value;
+		//var detail = document.detailForm.prodDetail.value;
+		//var manuDate = document.detailForm.manuDate.value;
+		//var price = document.detailForm.price.value;
+		
+		var quantity=$("input[name='tranQuantity']").val();
+	
+		if(quantity == null || quantity.length<1){
+			alert("구매 개수를 입력해주세요.");
+			return;
+		}
+		if(quantity > ${product.prodQuantity}){
+			alert("${product.prodQuantity}개를 초과할 수 없습니다.");
+			return;
+		}
 		$("form").attr("method" , "POST").attr("action" , "/purchase/addPurchase").submit();
 	}
-	
 	
 	$(function() {	
 		$( "td.ct_btn01:contains('구매')" ).on("click" , function() {
 			fncAddPurchase();
 		});
-	});	
+	}	);
 	
 	
 	$(function() {
@@ -172,6 +187,19 @@
 			</select>
 		</td>
 	</tr>
+	
+		<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
+	<tr>
+		<td width="104" class="ct_write">수량</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">
+			<input		type="text" name="tranQuantity" 	class="ct_input_g" 
+							style="width: 100px; height: 19px" maxLength="20" />
+		</td>
+	</tr>
+	
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>

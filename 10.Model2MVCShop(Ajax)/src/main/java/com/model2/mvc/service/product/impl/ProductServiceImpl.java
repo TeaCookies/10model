@@ -63,4 +63,7 @@ public class ProductServiceImpl implements ProductService {
 	public void updateProduct(Product product) throws Exception {
 		productDao.updateProduct(product);
 	}
+	public void updateProdQuantity(Product product) throws Exception {
+		productDao.updateProdQuantity(product);
+	}
 }

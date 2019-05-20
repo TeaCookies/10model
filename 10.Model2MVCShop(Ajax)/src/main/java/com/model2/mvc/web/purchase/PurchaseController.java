@@ -68,6 +68,7 @@ public class PurchaseController {
 		purchase.setBuyer((User)session.getAttribute("user"));
 		
 		model.addAttribute("purchase", purchase);
+		model.addAttribute("product", productService.getProduct(prodNo));
 		
 		return "forward:/purchase/addPurchaseView.jsp";
 	}
@@ -83,7 +84,11 @@ public class PurchaseController {
 
 		System.out.println("/purchase/addPurchase : POST");
 		
-		purchase.setPurchaseProd(productService.getProduct(prodNo));
+		Product product=productService.getProduct(prodNo);
+		product.setProdQuantity(product.getProdQuantity()-purchase.getTranQuantity());
+		productService.updateProdQuantity(product);
+		
+		purchase.setPurchaseProd(product);
 		purchase.setBuyer((User)session.getAttribute("user"));
 		
 		//Business Logic

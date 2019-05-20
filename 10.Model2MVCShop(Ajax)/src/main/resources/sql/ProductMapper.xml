@@ -16,26 +16,28 @@
 		<result property="fileName" 	column="image_file" 		jdbcType="VARCHAR" />
 		<result property="regDate" 		column="reg_date" 			jdbcType="DATE" />
 		<result property="proTranCode" 	column="tran_status_code" 	jdbcType="CHAR" />
+		<result property="prodQuantity" 	column="prodquantity" 	jdbcType="INTEGER" />
+		
 	</resultMap>
 	
 	
 	<!-- SQL : INSERT -->
 	<insert 	id="addProduct"		parameterType="product" >
 	 	INSERT
-		INTO product ( prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date) 
+		INTO product ( prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity) 
 		VALUES	 (	seq_product_prod_no.nextval , #{prodName} , #{prodDetail:VARCHAR} , 
 					TO_DATE(#{manuDate:VARCHAR},'YYYY-MM-DD') ,
 					<if test="price==0">null</if>
 					<if test="price!=0">#{price}</if>, 
-					#{fileName:VARCHAR} , SYSDATE )
+					#{fileName:VARCHAR} , SYSDATE, #{prodQuantity} )
 	 </insert>
 	 
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getProduct"	parameterType="int"	resultMap="productSelectMap">
 		SELECT
-		p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file,  p.reg_date , t.tran_status_code 	
-		FROM product p, transaction t  
-		WHERE p.prod_no = t.prod_no(+) AND p.prod_no = #{value}
+		prod_no , prod_name , prod_detail , manufacture_day , price, image_file,  reg_date , prodquantity 	
+		FROM product 
+		WHERE prod_no = #{value}
 	 </select>
 	 
 	 <!-- SQL : UPDATE -->
@@ -50,17 +52,26 @@
 	   	</set>
 	   	WHERE prod_no = #{prodNo}
 	 </update>
+	 
+	 <update	id="updateProdQuantity"	parameterType="product" >
+	   	UPDATE product
+	   	<set>
+			prodquantity 		= #{prodQuantity}
+	   	</set>
+	   	WHERE prod_no = #{prodNo}
+	 </update>
 		 
 	<!-- SQL : SELECT LIST -->
 	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, p.reg_date, t.tran_status_code 	
-										FROM product p, transaction t
+	  					FROM		(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, 
+	  														p.reg_date, p.prodquantity, t.tran_status_code 
+											FROM product p , transaction t
 											<where>
-												p.prod_no = t.prod_no(+) 
+												p.prod_no=t.prod_no(+)
 												<if test="searchKeyword != null">
-										 		AND prod_name LIKE '%'||#{searchKeyword}||'%'
+										 		AND p.prod_name LIKE '%'||#{searchKeyword}||'%'
 												</if>
 											</where>
 											ORDER BY p.prod_no ) inner_table
@@ -76,19 +87,46 @@
 	 			CDATA ==> Character Data 의 의미 Java 에서 \n 같은 특수문자 처리  
 
 				WHERE ROWNUM <![CDATA[ <=]]> #{endRowNum} )
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity
+										FROM product
+											<where>
+												<if test="searchKeyword != null">
+										 		prod_name LIKE '%'||#{searchKeyword}||'%'
+												</if>
+											</where>
+											ORDER BY prod_no ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+
+
 		-->
 	
 	<!-- SQL : SELECT ROW Count -->	 
 	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, p.reg_date, t.tran_status_code 	
-						FROM product p, transaction t
-						<where>
-							p.prod_no = t.prod_no(+) 		
+	  	FROM(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, 
+												p.reg_date, p.prodquantity, t.tran_status_code 
+						FROM product p , transaction t
+						<where> 		
+								p.prod_no=t.prod_no(+)
 								<if test="searchKeyword !=null ">
-						 		AND prod_name LIKE '%'||#{searchKeyword}||'%'
+						 		AND p.prod_name LIKE '%'||#{searchKeyword}||'%'
 								</if> 
 						</where> ) countTable						
 	 </select>
+	 
+	 <!-- 
+	 SELECT COUNT(*)
+	  	FROM(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity	
+						FROM product 
+						<where> 		
+								<if test="searchKeyword !=null ">
+						 		prod_name LIKE '%'||#{searchKeyword}||'%'
+								</if> 
+						</where> ) countTable		
+	 
+	  -->
 	 
 </mapper>

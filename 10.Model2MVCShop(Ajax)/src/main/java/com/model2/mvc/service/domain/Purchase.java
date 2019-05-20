@@ -19,7 +19,17 @@ public class Purchase {
 	private String receiverPhone;
 	private String tranCode;
 	private int tranNo;
+	private int tranQuantity;
 	
+	
+	public int getTranQuantity() {
+		return tranQuantity;
+	}
+
+	public void setTranQuantity(int tranQuantity) {
+		this.tranQuantity = tranQuantity;
+	}
+
 	public Purchase(){
 	}
 	
