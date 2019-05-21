@@ -22,6 +22,7 @@
 		<result property="orderDate" 		column="order_data" 		jdbcType="DATE" />
 		<result property="divyDate" 		column="dlvy_date" 			jdbcType="DATE" />
 		<result property="tranQuantity" 		column="tranquantity" 			jdbcType="INTEGER" />
+		<result property="status" 		column="status" 			jdbcType="VARCHAR" />
 	 </resultMap>
 	
 	
@@ -89,6 +90,15 @@
 	   	UPDATE transaction
 	   	<set>
 			tran_status_code	= #{tranCode}
+	   	</set>
+	   	WHERE tran_no = #{tranNo}
+	 </update>
+	 
+	 
+	 <update	id="cancelPurchase"	parameterType="purchase" >
+	   	UPDATE transaction
+	   	<set>
+			status	= #{status}
 	   	</set>
 	   	WHERE tran_no = #{tranNo}
 	 </update>

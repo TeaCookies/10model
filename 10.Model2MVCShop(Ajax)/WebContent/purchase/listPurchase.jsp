@@ -78,7 +78,19 @@
 		//상품명 클릭
 		$( ".ct_list_pop td:nth-child(5)" ).on("click" , function() {
 			self.location ="/product/getProduct?prodNo="+$(this).children().val()+"&menu=search";
-			console.log ( " :::::: "+$(this).children().val() );
+			console.log ( $(this).children().val() );
+		});
+		
+		//취소
+	//	$( "span:contains('취소')" ).on("click" , function() {
+		$(".ct_list_pop td:nth-child(15)").on("click" , function() {
+			var tranNo = $(  	$('.ct_list_pop td:nth-child(3)')[ $('.ct_list_pop td:nth-child(15)').index(this) ]    ).text().trim();
+		//	alert( 	tranNo	);
+		//	alert( 	$(  	$('.ct_list_pop td:nth-child(3)')[ $('.ct_list_pop td:nth-child(15)').index(this) ]    ).children().val()	);
+		//	alert( 		$(".ct_list_pop td:nth-child(15)").index(this)		);
+		// alert( 		$(  	$(".ct_list_pop td:nth-child(3)")[ $(".ct_list_pop td:nth-child(15)").index(this) ]    ).text().trim()		);
+		//	alert( 		"/purchase/cancelPurchase?tranNo="+tranNo		);
+			self.location ="/purchase/cancelPurchase?tranNo="+tranNo;
 		});
 		
 		$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
@@ -125,20 +137,22 @@
 				<tr>
 					<td class="ct_list_b" width="50">No</td>
 					<td class="ct_line02"></td>
-					<td class="ct_list_b" width="150">주문번호</td>
+					<td class="ct_list_b" width="100">주문번호</td>
 					<td class="ct_line02"></td>
 					<td class="ct_list_b" width="150">상품명</td>
 					<td class="ct_line02"></td>
 					<td class="ct_list_b" width="50">수량</td>
 					<td class="ct_line02"></td>
-					<td class="ct_list_b" width="100">가격</td>
+					<td class="ct_list_b" width="50">가격</td>
 					<td class="ct_line02"></td>
 					<td class="ct_list_b">주문현황</td>
 					<td class="ct_line02"></td>
 					<td class="ct_list_b">정보수정</td>
+					<td class="ct_line02"></td>
+					<td class="ct_list_b">취소</td>
 				</tr>
 				<tr>
-					<td colspan="11" bgcolor="808285" height="1"></td>
+					<td colspan="15" bgcolor="808285" height="1"></td>
 				</tr>
 
 				<c:set var="i" value="0" />
@@ -181,28 +195,43 @@
 						<td></td>
 						<td align="left">
 						
-						<c:choose>
-							<c:when test="${ purchase.tranCode eq '1'  }">
+					<c:choose>
+						<c:when test="${ empty purchase.status}">
+								<c:if test="${ purchase.tranCode eq '1'  }">
 								배송 준비 중
-							</c:when>	
-							<c:when test="${purchase.tranCode eq '2' }">
+								</c:if>
+								<c:if test="${purchase.tranCode eq '2' }">
 								수취 확인
-							</c:when>
-							<c:when test="${ purchase.tranCode eq '3'  }">
+								</c:if>
+								<c:if test="${ purchase.tranCode eq '3'  }">
 								배송 완료
-							</c:when>		
-						</c:choose>
+								</c:if>		
+							</c:when>
+							<c:otherwise>
+								취소 완료
+							</c:otherwise>
+						</c:choose> 
+
 					</td>
+
 					<td></td>
-					<td align="left"></td>
-					<td></td>
+					<td align="left">
+						<c:if test="${ empty purchase.status}">
+						취소
+						</c:if>
+						<c:if test="${  purchase.status eq '4'}">
+						취소 완료
+						</c:if>
+						
+					
+					</td>
 					</tr>
 	
 					<tr>
 						<!-- //////////////////////////// 추가 , 변경된 부분 /////////////////////////////
 						<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 						////////////////////////////////////////////////////////////////////////////////////////////  -->
-						<td id="${purchase.tranNo}" colspan="11" bgcolor="D6D7D6" height="1"></td>
+						<td id="${purchase.tranNo}" colspan="15" bgcolor="D6D7D6" height="1"></td>
 					</tr>
 				</c:forEach>
 			</table>

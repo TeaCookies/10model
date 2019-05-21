@@ -80,6 +80,10 @@ public class PurchaseDaoImpl implements PurchaseDao {
 	public void updateTranCode(Purchase purchase) throws Exception {
 		sqlSession.update("PurchaseMapper.updateTranCode", purchase);
 	}
+	
+	public void cancelPurchase(Purchase purchase) throws Exception {
+		sqlSession.update("PurchaseMapper.cancelPurchase", purchase);
+	}
 
 	@Override
 	public int getTotalCount(String	buyerId) throws Exception {

@@ -142,6 +142,46 @@
 											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
 			});
 		});	
+		
+		 $(function() {
+				$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
+						//Debug..
+						//alert(  $( this ).text().trim() );
+						
+						var userId = $(this).text().trim();
+						$.ajax( 
+								{
+									url : "/user/json/getUser/"+userId ,
+									method : "GET" ,
+									dataType : "json" ,
+									headers : {
+										"Accept" : "application/json",
+										"Content-Type" : "application/json"
+									},
+									success : function(JSONData , status) {
+
+										//Debug...
+										alert(status);
+										//Debug...
+										alert("JSONData : \n"+JSONData);
+										
+										var displayValue = "<h3>"
+																	+"아이디 : "+JSONData.userId+"<br/>"
+																	+"이  름 : "+JSONData.userName+"<br/>"
+																	+"이메일 : "+JSONData.email+"<br/>"
+																	+"ROLE : "+JSONData.role+"<br/>"
+																	+"등록일 : "+JSONData.regDate+"<br/>"
+																	+"</h3>";
+										//Debug...									
+										alert(displayValue);
+										$("h3").remove();
+										$( "#"+userId+"" ).html(displayValue);
+									}
+							});
+							////////////////////////////////////////////////////////////////////////////////////////////
+						
+				});
+		 });
 
 	</script>		
 	
@@ -188,6 +228,13 @@
 						<input 	type="text" name="userId" class="ct_input_bg" 
 										style="width:100px; height:19px"  maxLength="20" >
 					</td>
+					<!-- //////////////////////////// 추가 , 변경된 부분 /////////////////////////////
+					<td colspan="11" bgcolor="D6D7D6" height="1"></td>
+					////////////////////////////////////////////////////////////////////////////////////////////  -->
+					<td id="${user.userId}" colspan="11" bgcolor="D6D7D6" height="1"></td>
+					
+					
+					
 					<td>
 						<table border="0" cellspacing="0" cellpadding="0">
 							<tr>

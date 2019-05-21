@@ -70,6 +70,11 @@ public class PurchaseServiceImpl implements PurchaseService{
 		// TODO Auto-generated method stub
 		purchaseDao.updateTranCode(purchase);
 	}
+	
+	public void cancelPurchase(Purchase purchase) throws Exception {
+		// TODO Auto-generated method stub
+		purchaseDao.cancelPurchase(purchase);
+	}
 }
 	
 
