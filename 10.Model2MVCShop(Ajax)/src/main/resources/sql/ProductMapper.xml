@@ -61,6 +61,7 @@
 	   	WHERE prod_no = #{prodNo}
 	 </update>
 	 
+	 
 	 <update	id="updateProdQuantity"	parameterType="product" >
 	   	UPDATE product
 	   	<set>
@@ -74,28 +75,30 @@
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, 
-	  														p.reg_date, p.prodquantity, t.tran_status_code , t.tran_no 
-											FROM product p , transaction t
-											<where>
-												p.prod_no=t.prod_no(+)
-												<if test="searchKeyword != null">
-										 		AND p.prod_name LIKE '%'||#{searchKeyword}||'%'
-												</if>
-											</where>
-											ORDER BY p.prod_no ) inner_table
-						WHERE ROWNUM &lt;= #{endRowNum} )
+	  															p.reg_date, p.prodquantity, t.tran_status_code , t.tran_no 
+												FROM product p , transaction t
+												<where>
+													p.prod_no=t.prod_no(+)
+													<if test="searchKeyword != null">
+											 		AND p.prod_name LIKE '%'||#{searchKeyword}||'%'
+													</if>
+												</where>
+												ORDER BY p.prod_no ) inner_table
+							WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
 	 </select>
+
 	 	<!--  위 두번째 subQuery 의  
 	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는
 	 			WHERE ROWNUM <= #{endRowNum} ) 의미이며..
 	 			< 는 keyword 로 &lt; 를	사용.
-	 			
+
 	 			<![CDATA[  ~~~  ]]> 를 이용하여 아래와 같이 사용  할 수 있다.
 	 			CDATA ==> Character Data 의 의미 Java 에서 \n 같은 특수문자 처리  
 
 				WHERE ROWNUM <![CDATA[ <=]]> #{endRowNum} )
 		-->
+
 		<select  id="getProductList2"  parameterType="search"	resultMap="productSelectMap">
 		SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
@@ -110,15 +113,13 @@
 						WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
 	</select>
-	
-	
-	
-	
+
+
 	<!-- SQL : SELECT ROW Count -->	 
 	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, 
-												p.reg_date, p.prodquantity, t.tran_status_code , t.tran_no 
+										p.reg_date, p.prodquantity, t.tran_status_code , t.tran_no 
 						FROM product p , transaction t
 						<where> 		
 								p.prod_no=t.prod_no(+)
@@ -127,17 +128,16 @@
 								</if> 
 						</where> ) countTable						
 	 </select>
-	 
+
 	 <select  id="getTotalCount2"  parameterType="search"	 resultType="int">
 	 SELECT COUNT(*)
-	  	FROM(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity	
-						FROM product 
+	  FROM(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity	
+					FROM product 
 						<where> 		
 								<if test="searchKeyword !=null ">
 						 		prod_name LIKE '%'||#{searchKeyword}||'%'
 								</if> 
 						</where> ) countTable		
-	 
 	 </select>
 	 
 </mapper>

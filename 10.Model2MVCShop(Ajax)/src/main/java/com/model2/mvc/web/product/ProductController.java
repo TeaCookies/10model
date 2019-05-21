@@ -172,7 +172,7 @@ public class ProductController {
 	public String listProduct( @ModelAttribute("search") Search search,
 														@RequestParam("menu") String menu  ,Model model ) throws Exception{
 		
-		System.out.println("/product/listProduct : GET / POST");
+		System.out.println("/product/listProduct : GET / POST"+menu);
 		
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
@@ -185,8 +185,8 @@ public class ProductController {
 		
 		Map<String , Object> map;
 		Page resultPage;
-		if (menu.equals("manage")) {
-			
+		
+		if (menu.contains("manage")) {
 			map=productService.getProductList(search);
 			resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 			System.out.println(resultPage);
