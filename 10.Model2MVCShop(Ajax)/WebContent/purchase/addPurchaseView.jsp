@@ -28,11 +28,11 @@
 		var quantity=$("input[name='tranQuantity']").val();
 	
 		if(quantity == null || quantity.length<1){
-			alert("구매 개수를 입력해주세요.");
+			alert("구매 수량을 입력해주세요.");
 			return;
 		}
 		if(quantity > ${product.prodQuantity}){
-			alert("${product.prodQuantity}개를 초과할 수 없습니다.");
+			alert("${product.prodQuantity+1}개 미만으로 입력해주세요.");
 			return;
 		}
 		$("form").attr("method" , "POST").attr("action" , "/purchase/addPurchase").submit();
@@ -78,7 +78,7 @@
 <form name="addPurchase" >
 
 <input type="hidden" name="prodNo" value="${purchase.purchaseProd.prodNo }" />
-<input type="hidden" name="tranCode" value="1" />
+<!--  <input type="hidden" name="tranCode" value="1" />-->
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>

@@ -13,9 +13,11 @@ public interface ProductService {
 
 	//상품정보확인
 	public Product getProduct(int prodNo) throws Exception;
+	public Product getProduct2(int tranNo) throws Exception;
 
 	//상품 리스트
 	public Map<String,Object> getProductList(Search searchVO) throws Exception;
+	public Map<String,Object> getProductList2(Search searchVO) throws Exception;
 
 	//상품 정보 수정
 	public void updateProduct(Product productVO) throws Exception;

@@ -169,7 +169,8 @@ public class ProductController {
 	
 	//@RequestMapping("/listProduct.do")
 	@RequestMapping( value="listProduct" )
-	public String listProduct( @ModelAttribute("search") Search search, Model model ) throws Exception{
+	public String listProduct( @ModelAttribute("search") Search search,
+														@RequestParam("menu") String menu  ,Model model ) throws Exception{
 		
 		System.out.println("/product/listProduct : GET / POST");
 		
@@ -181,10 +182,22 @@ public class ProductController {
 		System.out.println("■■■■■ 검색어 확인 : "+search.getSearchKeyword());
 		
 		// Business logic 수행
-		Map<String , Object> map=productService.getProductList(search);
 		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
+		Map<String , Object> map;
+		Page resultPage;
+		if (menu.equals("manage")) {
+			
+			map=productService.getProductList(search);
+			resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+			System.out.println(resultPage);
+			
+		} else {
+			map=productService.getProductList2(search);
+			resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+			System.out.println(resultPage);
+			
+		}
+		
 		
 		// Model 과 View 연결
 		model.addAttribute("list", map.get("list"));

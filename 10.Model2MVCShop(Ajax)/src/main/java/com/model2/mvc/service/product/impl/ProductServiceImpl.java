@@ -45,12 +45,27 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		return productDao.getProduct(prodNo);
 	}
+	public Product getProduct2(int tranNo) throws Exception {
+		// TODO Auto-generated method stub
+		return productDao.getProduct2(tranNo);
+	}
 
 	@Override
 	public Map<String, Object> getProductList(Search search) throws Exception {
 				
 		List<Product> list= productDao.getProductList(search);
 		int totalCount = productDao.getTotalCount(search);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list );
+		map.put("totalCount", new Integer(totalCount));
+		
+		return map;
+	}
+	public Map<String, Object> getProductList2(Search search) throws Exception {
+		
+		List<Product> list= productDao.getProductList2(search);
+		int totalCount = productDao.getTotalCount2(search);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list );

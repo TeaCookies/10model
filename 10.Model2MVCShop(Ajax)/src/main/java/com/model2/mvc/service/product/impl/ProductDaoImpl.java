@@ -40,10 +40,16 @@ public class ProductDaoImpl implements ProductDao {
 	public Product getProduct(int prodNo) throws Exception {
 		return sqlSession.selectOne("ProductMapper.getProduct", prodNo);
 	}
+	public Product getProduct2(int tranNo) throws Exception {
+		return sqlSession.selectOne("ProductMapper.getProduct2", tranNo);
+	}
 
 	@Override
 	public List<Product> getProductList(Search search) throws Exception {
 		return sqlSession.selectList("ProductMapper.getProductList", search);
+	}
+	public List<Product> getProductList2(Search search) throws Exception {
+		return sqlSession.selectList("ProductMapper.getProductList2", search);
 	}
 
 	@Override
@@ -58,6 +64,9 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public int getTotalCount(Search search) throws Exception {
 		return sqlSession.selectOne("ProductMapper.getTotalCount", search);
+	}
+	public int getTotalCount2(Search search) throws Exception {
+		return sqlSession.selectOne("ProductMapper.getTotalCount2", search);
 	}
 
 }

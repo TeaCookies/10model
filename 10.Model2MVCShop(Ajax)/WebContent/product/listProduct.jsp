@@ -20,11 +20,11 @@
 			fncGetList(1);
 		});
 		
-	//	$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
-//				self.location ="/product/listProductList?prodNo="+$(this).children().val();
-//				console.log ( $(this).children().val() );
-	//			console.log (":::"+ $( ".ct_list_pop td:nth-child(9)").html() );
-	//	});
+		$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
+			self.location ="/product/getProduct?prodNo="+ $(this).children().val()+"&menu=${param.menu}";
+				console.log ( $(this).children().val() );
+				console.log (":::"+ $( ".ct_list_pop td:nth-child(9)").html() );
+		});
 		
 		$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
 		$("h7").css("color" , "red");
@@ -32,9 +32,11 @@
 		$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
 	
 		$( "td:contains('배송하기')" ).on("click" , function() {
-			self.location ="/purchase/updateTranCode?prodNo="+$(this).parent().children("td:nth-child(3)").children().val()+"&tranCode="+$(this).parent().children("td:nth-child(9)").children().val();
+		//	self.location ="/purchase/updateTranCode?prodNo="+$(this).parent().children("td:nth-child(3)").children().val()+"&tranCode="+$(this).parent().children("td:nth-child(9)").children().val();
+			self.location ="/purchase/updateTranCode?tranNo="+$(this).parent().children("td:nth-child(3)").children("input:nth-child(2)").val()+"&tranCode="+$(this).parent().children("td:nth-child(9)").children().val();
 			console.log ( "확인1 :: "+$(this).parent().children("td:nth-child(3)").children().val() );
-			console.log ( "확인2 :: "+$(this).parent().children("td:nth-child(9)").children().val() );
+			console.log ( "확인2 :: "+$(this).parent().children("td:nth-child(3)").children("input:nth-child(2)").val() );
+			console.log ( "확인3 :: "+$(this).parent().children("td:nth-child(9)").children().val() );
 		
 		});
 		
@@ -42,10 +44,10 @@
 			self.location ="/product/listProduct?menu=${param.menu}";
 			console.log ( "/product/listProduct?menu=${param.menu}");
 		});
-		$( "td:contains('수정')" ).on("click" , function() {
-			self.location ="/product/getProduct?prodNo="+$( ".ct_list_pop td:nth-child(3)" ).children().val()+"&menu=${param.menu}";
-			console.log ( "/product/listProduct?menu=${param.menu}");
-		});
+	//	$( "td:contains('수정')" ).on("click" , function() {
+	//		self.location ="/product/getProduct?prodNo="+$( ".ct_list_pop td:nth-child(3)" ).children().val()+"&menu=${param.menu}";
+	//		console.log ( "/product/listProduct?menu=${param.menu}");
+	//	});
 				
 			
 	 });	
@@ -132,8 +134,6 @@
 				<td class="ct_list_b">등록일</td>
 				<td class="ct_line02"></td>
 				<td class="ct_list_b">현재상태</td>
-				<td class="ct_line02"></td>
-				<td class="ct_list_b">수정</td>
 			</tr>
 			<tr>
 				<td colspan="11" bgcolor="808285" height="1"></td>
@@ -150,8 +150,9 @@
 				<td align="center">${product.prodName} 
 					<input type="hidden" value="${product.prodNo}"/>
 					<c:if test="${param.menu =='manage'}">
-							[남은 수량] ${product.prodQuantity}
+							[남은 수량] ${product.prodQuantity} / ${ product.prodTranNo }
 						</c:if>
+					<input type="hidden" value="${ product.prodTranNo }"/>
 				</td>
 				<td></td>
 				<td align="right">${product.price}원</td>
@@ -164,7 +165,7 @@
 			
 			
 				<c:choose>
-					<c:when test="${ empty product.proTranCode || product.proTranCode eq '0'}">
+					<c:when test="${( empty product.proTranCode || product.proTranCode eq '0') && product.prodQuantity != 0}">
 							판매 중
 					</c:when>
 					
@@ -217,10 +218,7 @@
 					
 				
 
-				</td>
-				<td></td>
-				<td align="left">수정</td>
-			</tr>
+
 
 			<tr>
 				<td colspan="11" bgcolor="D6D7D6" height="1"></td>

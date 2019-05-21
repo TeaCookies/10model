@@ -17,6 +17,7 @@
 		<result property="regDate" 		column="reg_date" 			jdbcType="DATE" />
 		<result property="proTranCode" 	column="tran_status_code" 	jdbcType="CHAR" />
 		<result property="prodQuantity" 	column="prodquantity" 	jdbcType="INTEGER" />
+		<result property="prodTranNo" 	column="tran_no" 	jdbcType="INTEGER" />
 		
 	</resultMap>
 	
@@ -38,6 +39,13 @@
 		prod_no , prod_name , prod_detail , manufacture_day , price, image_file,  reg_date , prodquantity 	
 		FROM product 
 		WHERE prod_no = #{value}
+	 </select>
+	 
+	 <select 	id="getProduct2"	parameterType="int"	resultMap="productSelectMap">
+		SELECT
+		p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file,  p.reg_date , p.prodquantity, t.tran_no 	
+		FROM product p, transaction t
+		WHERE p.prod_no=t.prod_no(+) AND t.tran_no = #{value}
 	 </select>
 	 
 	 <!-- SQL : UPDATE -->
@@ -66,7 +74,7 @@
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, 
-	  														p.reg_date, p.prodquantity, t.tran_status_code 
+	  														p.reg_date, p.prodquantity, t.tran_status_code , t.tran_no 
 											FROM product p , transaction t
 											<where>
 												p.prod_no=t.prod_no(+)
@@ -87,27 +95,30 @@
 	 			CDATA ==> Character Data 의 의미 Java 에서 \n 같은 특수문자 처리  
 
 				WHERE ROWNUM <![CDATA[ <=]]> #{endRowNum} )
-	  	SELECT *
+		-->
+		<select  id="getProductList2"  parameterType="search"	resultMap="productSelectMap">
+		SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity
-										FROM product
-											<where>
-												<if test="searchKeyword != null">
-										 		prod_name LIKE '%'||#{searchKeyword}||'%'
-												</if>
-											</where>
-											ORDER BY prod_no ) inner_table
+												FROM product
+												<where>
+													<if test="searchKeyword != null">
+											 		prod_name LIKE '%'||#{searchKeyword}||'%'
+													</if>
+												</where>
+												ORDER BY prod_no ) inner_table
 						WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
-
-
-		-->
+	</select>
+	
+	
+	
 	
 	<!-- SQL : SELECT ROW Count -->	 
 	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, 
-												p.reg_date, p.prodquantity, t.tran_status_code 
+												p.reg_date, p.prodquantity, t.tran_status_code , t.tran_no 
 						FROM product p , transaction t
 						<where> 		
 								p.prod_no=t.prod_no(+)
@@ -117,7 +128,7 @@
 						</where> ) countTable						
 	 </select>
 	 
-	 <!-- 
+	 <select  id="getTotalCount2"  parameterType="search"	 resultType="int">
 	 SELECT COUNT(*)
 	  	FROM(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity	
 						FROM product 
@@ -127,6 +138,6 @@
 								</if> 
 						</where> ) countTable		
 	 
-	  -->
+	 </select>
 	 
 </mapper>

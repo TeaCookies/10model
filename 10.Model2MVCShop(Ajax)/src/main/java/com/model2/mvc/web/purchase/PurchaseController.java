@@ -90,6 +90,7 @@ public class PurchaseController {
 		
 		purchase.setPurchaseProd(product);
 		purchase.setBuyer((User)session.getAttribute("user"));
+		purchase.setTranCode("1");
 		
 		//Business Logic
 		purchaseService.addPurchase(purchase);
@@ -155,14 +156,20 @@ public class PurchaseController {
 	//@RequestMapping("/updateTranCode.do")
 	@RequestMapping( value="updateTranCode", method=RequestMethod.GET)
 	public String updateTranCode( @ModelAttribute("purchase") Purchase purchase , 
-												@RequestParam("prodNo") int prodNo ,
+										//		@RequestParam("prodNo") int prodNo ,
+												@RequestParam("tranNo") int tranNo ,
 												@RequestParam("tranCode") String tranCode ,
 												Model model) throws Exception{
 
 		System.out.println("/purchase/updateTranCode : GET");
 		
-		Product product = productService.getProduct(prodNo);
-		purchase = purchaseService.getPurchase2(prodNo);
+//		Product product = productService.getProduct(prodNo);
+		Product product = productService.getProduct2(tranNo);
+		purchase = purchaseService.getPurchase(tranNo);
+		System.out.println("     확인 1    :   "+product);
+		System.out.println("     확인 2    :   "+purchase);
+		System.out.println("     확인 3    :   "+tranCode);
+		
 	
 		if (tranCode.trim().equals("1")) {
 			product.setProTranCode("2");
@@ -173,6 +180,8 @@ public class PurchaseController {
 		}		
 		
 		purchase.setTranCode(product.getProTranCode());
+		System.out.println("■■■■■■■ 11111 :  " +product.getProTranCode());
+		System.out.println("■■■■■■■ 2222 :  " +purchase.getTranCode());
 		
 		//Business Logic
 		purchaseService.updateTranCode(purchase);

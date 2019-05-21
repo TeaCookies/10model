@@ -17,9 +17,9 @@
 	
 	$(function() {
 		$( "td:contains('수취')" ).on("click" , function() {
-			self.location ="/purchase/updateTranCode?prodNo="+$(this).parent().children("td:nth-child(5)").children().val()+"&tranCode="+$(this).parent().children(  "td:nth-child(7)" ).children().val();
-			console.log ( "prodNo :: "+$(this).parent().children("td:nth-child(5)").children().val());
-			console.log ( "tranCode :: "+$(this).parent().children("td:nth-child(7)").children().val());
+			self.location ="/purchase/updateTranCode?tranNo="+$(this).parent().children("td:nth-child(3)").children().val()+"&tranCode="+$(this).parent().children(  "td:nth-child(9)" ).children().val();
+			console.log ( "tranNo :: "+$(this).parent().children("td:nth-child(3)").children().val());
+			console.log ( "tranCode :: "+$(this).parent().children("td:nth-child(9)").children().val());
 		});
 	});
 		
@@ -56,8 +56,6 @@
 
 							var displayValue = "<h3>"
 														+"상품번호 : "+JSONData.purchaseProd.prodNo+"<br/>"
-														+"상품명 : "+JSONData.purchaseProd.prodName+"<br/>"
-														+"구매 개수 : "+JSONData.tranQuantity+"<br/>"
 														+"구매방법 : "+JSONData.paymentOption+"<br/>"
 														+"구매자이름 : "+JSONData.receiverName+"<br/>"
 														+"구매자연락처 : "+JSONData.receiverPhone+"<br/>"
@@ -155,7 +153,7 @@
 						<td align="center" >${purchase.purchaseProd.prodName }
 							<input type="hidden" name="prodNo" value="${purchase.purchaseProd.prodNo}"/></td>
 						<td></td>
-							<td align="center"> ${purchase.tranQuantity }개
+						<td align="center"> ${purchase.tranQuantity }개</td>
 						<td></td>
 						<td align="center"> ${purchase.purchaseProd.price }원
 							<input type="hidden" name="tranCode" value="${purchase.tranCode}"/></td>
@@ -197,6 +195,7 @@
 					</td>
 					<td></td>
 					<td align="left"></td>
+					<td></td>
 					</tr>
 	
 					<tr>

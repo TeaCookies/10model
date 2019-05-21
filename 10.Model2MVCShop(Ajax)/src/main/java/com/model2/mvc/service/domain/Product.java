@@ -19,7 +19,16 @@ public class Product {
 	private String proTranCode;
 	private MultipartFile upload;
 	private int prodQuantity;
+	private int prodTranNo;
 	
+	public int getProdTranNo() {
+		return prodTranNo;
+	}
+
+	public void setProdTranNo(int prodTranNo) {
+		this.prodTranNo = prodTranNo;
+	}
+
 	public int getProdQuantity() {
 		return prodQuantity;
 	}
