@@ -27,6 +27,5 @@ public interface PurchaseService {
 	//구매한 상품 tranCode 수정
 	public void updateTranCode(Purchase purchase) throws Exception;
 	
-	public void cancelPurchase(Purchase purchase) throws Exception;
 	
 }

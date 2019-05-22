@@ -83,13 +83,16 @@
 		
 		//취소
 	//	$( "span:contains('취소')" ).on("click" , function() {
-		$(".ct_list_pop td:nth-child(15)").on("click" , function() {
-			var tranNo = $(  	$('.ct_list_pop td:nth-child(3)')[ $('.ct_list_pop td:nth-child(15)').index(this) ]    ).text().trim();
+//		$(".ct_list_pop td:nth-child(15)").on("click" , function() {
+//			var tranNo = $(  	$('.ct_list_pop td:nth-child(3)')[ $('.ct_list_pop td:nth-child(15)').index(this) ]    ).text().trim();
 		//	alert( 	tranNo	);
 		//	alert( 	$(  	$('.ct_list_pop td:nth-child(3)')[ $('.ct_list_pop td:nth-child(15)').index(this) ]    ).children().val()	);
-		//	alert( 		$(".ct_list_pop td:nth-child(15)").index(this)		);
-		// alert( 		$(  	$(".ct_list_pop td:nth-child(3)")[ $(".ct_list_pop td:nth-child(15)").index(this) ]    ).text().trim()		);
-		//	alert( 		"/purchase/cancelPurchase?tranNo="+tranNo		);
+//			self.location ="/purchase/cancelPurchase?tranNo="+tranNo;
+	//	});
+		$(".ct_list_pop td:nth-child(15):contains('취소')").on("click" , function() {
+			var tranNo = $(  	$('.ct_list_pop td:nth-child(3)')[ $('.ct_list_pop td:nth-child(15)').index(this) ]    ).text().trim();
+	//		alert( 	tranNo	);
+		//	alert( 	$(  	$('.ct_list_pop td:nth-child(3)')[ $('.ct_list_pop td:nth-child(15)').index(this) ]    ).children().val()	);
 			self.location ="/purchase/cancelPurchase?tranNo="+tranNo;
 		});
 		
@@ -187,7 +190,7 @@
 								배송 완료
 							</c:when>
 							<c:otherwise>
-								????? :: ${purchase.tranCode} 
+								취소 완료
 							</c:otherwise>
 						</c:choose>
 						
@@ -195,32 +198,31 @@
 						<td></td>
 						<td align="left">
 						
-					<c:choose>
-						<c:when test="${ empty purchase.status}">
+				
+						
 								<c:if test="${ purchase.tranCode eq '1'  }">
 								배송 준비 중
 								</c:if>
 								<c:if test="${purchase.tranCode eq '2' }">
-								수취 확인
+								[수취 확인]
 								</c:if>
 								<c:if test="${ purchase.tranCode eq '3'  }">
 								배송 완료
 								</c:if>		
-							</c:when>
-							<c:otherwise>
-								취소 완료
-							</c:otherwise>
-						</c:choose> 
+								<c:if test="${ purchase.tranCode eq '4'  }">
+								취소 완료</c:if>
+							
+					
 
 					</td>
 
 					<td></td>
 					<td align="left">
-						<c:if test="${ empty purchase.status}">
-						취소
+						<c:if test="${ purchase.tranCode ne '4'  }">
+						[취소]
 						</c:if>
-						<c:if test="${  purchase.status eq '4'}">
-						취소 완료
+						<c:if test="${  purchase.tranCode eq '4'}">
+						
 						</c:if>
 						
 					

@@ -13,8 +13,11 @@
 	
 	<!-- CDN(Content Delivery Network) 호스트 사용 -->
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" src="/resources/events.js"></script>
+	<script>
 		
+
+	
 		function fncAddUser() {
 			
 			var id=$("input[name='userId']").val();
@@ -130,58 +133,73 @@
 		 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		//==>"ID중복확인" Event 처리 및 연결
-		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-			 $("td.ct_btn:contains('ID중복확인')").on("click" , function() {
-				//alert($("td.ct_btn:contains('ID중복확인')").html());
-				popWin 
-				= window.open("/user/checkDuplication.jsp",
-											"popWin", 
-											"left=300,top=200,width=300,height=200,marginwidth=0,marginheight=0,"+
-											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
-			});
-		});	
-		
-		 $(function() {
-				$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
-						//Debug..
-						//alert(  $( this ).text().trim() );
-						
-						var userId = $(this).text().trim();
+			 $(function() {
+				//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+				//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
+				 $("td.ct_btn:contains('ID중복확인')").on("click" , function() {
+					//alert($("td.ct_btn:contains('ID중복확인')").html());
+					popWin 
+					= window.open("/user/checkDuplication.jsp",
+												"popWin", 
+												"left=300,top=200,width=300,height=200,marginwidth=0,marginheight=0,"+
+												"scrollbars=no,scrolling=no,menubar=no,resizable=no");
+				});
+				
+				
+				
+				
+				 $( "#userId" ).keyup(function( ) {
+						/////////////////////////////////////////////////////////////////////////////////////////// 
+						var userId = $(this).val().trim();
 						$.ajax( 
 								{
+									url : "/user/json/checkDuplication/"+userId ,
+									method : "GET" ,
+									dataType : "json" ,
+									headers : {
+															"Accept" : "application/json",
+															"Content-Type" : "application/json"											
+																																										},
+									success : function(JSONData , status) {
+												//	alert(JSONData.result);
+													if(  JSONData.result  ){			
+															$( '#idTest').text(   '사용할 수 있는 아이디입니다.'   );
+													}else{
+															$( '#idTest').text( "이미 존재하는 아이디입니다. " );
+													}
+																																										}
+								});  
+		/*						{
 									url : "/user/json/getUser/"+userId ,
 									method : "GET" ,
 									dataType : "json" ,
 									headers : {
-										"Accept" : "application/json",
-										"Content-Type" : "application/json"
-									},
+															"Accept" : "application/json",
+															"Content-Type" : "application/json"											},
 									success : function(JSONData , status) {
+															$( '#idTest').text( "이미 존재하는 아이디입니다. " );						},
+									error : function( ) {
+															$( '#idTest').text(   '사용할 수 있는 아이디입니다.'   );					}
+								});  */
+					//////////////////////////////////////////////////////////////////////////////////////////// 
+				
+					});//아이디 키업
+				 
+				 $( "input[name=password2]" ).keyup(function( ) {
+					 if( 		$("input[name=password]").val() 	!= 	$("input[name=password2]").val() 	){
+								 $( '#pwdTest').text(   '비밀번호가 일치하지 않습니다.'   );
+					 }else {
+								 $( '#pwdTest').text(   ' '   );
+					 }
+				
+				 }); //비번 키업
+				 
+			});	
 
-										//Debug...
-										alert(status);
-										//Debug...
-										alert("JSONData : \n"+JSONData);
-										
-										var displayValue = "<h3>"
-																	+"아이디 : "+JSONData.userId+"<br/>"
-																	+"이  름 : "+JSONData.userName+"<br/>"
-																	+"이메일 : "+JSONData.email+"<br/>"
-																	+"ROLE : "+JSONData.role+"<br/>"
-																	+"등록일 : "+JSONData.regDate+"<br/>"
-																	+"</h3>";
-										//Debug...									
-										alert(displayValue);
-										$("h3").remove();
-										$( "#"+userId+"" ).html(displayValue);
-									}
-							});
-							////////////////////////////////////////////////////////////////////////////////////////////
-						
-				});
-		 });
+		
+		
+			
+			</script>
 
 	</script>		
 	
@@ -216,44 +234,20 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	
+					
 	<tr>
 		<td width="104" class="ct_write">
 			아이디 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="105">
-						<input 	type="text" name="userId" class="ct_input_bg" 
-										style="width:100px; height:19px"  maxLength="20" >
-					</td>
-					<!-- //////////////////////////// 추가 , 변경된 부분 /////////////////////////////
-					<td colspan="11" bgcolor="D6D7D6" height="1"></td>
-					////////////////////////////////////////////////////////////////////////////////////////////  -->
-					<td id="${user.userId}" colspan="11" bgcolor="D6D7D6" height="1"></td>
-					
-					
-					
-					<td>
-						<table border="0" cellspacing="0" cellpadding="0">
-							<tr>
-								<td width="4" height="21">
-									<img src="/images/ct_btng01.gif" width="4" height="21"/>
-								</td>
-								<td align="center" background="/images/ct_btng02.gif" class="ct_btn" style="padding-top:3px;">
-									 ID중복확인
-								</td>
-								<td width="4" height="21">
-									<img src="/images/ct_btng03.gif" width="4" height="21"/>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
+			<input 	id="userId" type="text" name="userId" class="ct_input_bg" 
+										style="width:100px; height:19px"  maxLength="20" />
+			<span id="idTest" > </span>
 		</td>
 	</tr>
+	
+	
 	
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -282,6 +276,7 @@
 		<td class="ct_write01">
 			<input 	type="password" name="password2" class="ct_input_g" 
 							style="width:100px; height:19px"  maxLength="10" minLength="6"  />
+			<span id="pwdTest" > </span>
 		</td>
 	</tr>
 	
@@ -410,6 +405,7 @@
 </table>
 
 </form>
+
 
 </body>
 

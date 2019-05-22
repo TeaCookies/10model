@@ -2,11 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>상품 리스트</title>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
-
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	
 	function fncGetList(currentPage) {
@@ -51,7 +54,24 @@
 				
 			
 	 });	
+	 
+	 
+		$( function() {
+				
+				var availableTags = [
+														"ActionScript",
+														"AppleScript",
+														"Asp",
+														"BASIC",
+													];
+				
+				$( "#test" ).autocomplete({
+						source: availableTags
+				}); //autocomplete
+				
+		});	//function()
 	
+		
 </script>
 </head>
 
@@ -94,6 +114,7 @@
 			style="margin-top: 10px;">
 			<tr>
 				<td align="right">
+				<input type="text" id="test">
 
 					<input type="text" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : "" }" class="ct_input_g" 
 							style="width: 200px; height: 20px"></td>
@@ -150,7 +171,7 @@
 				<td align="center">${product.prodName} 
 					<input type="hidden" value="${product.prodNo}"/>
 					<c:if test="${param.menu =='manage'}">
-							[남은 수량] ${product.prodQuantity} / ${ product.prodTranNo }
+							[남은 수량] ${product.prodQuantity}  [주문번호] ${ product.prodTranNo }
 						</c:if>
 					<input type="hidden" value="${ product.prodTranNo }"/>
 				</td>
@@ -165,29 +186,32 @@
 			
 			
 				<c:choose>
-					<c:when test="${( empty product.proTranCode || product.proTranCode eq '0') && product.prodQuantity != 0}">
-							판매 중
-					</c:when>
-					
-					<c:when test="${product.proTranCode eq '1' }">
-							배송 전
-					 	
-						<c:if test="${param.menu =='manage'}">
-							[배송하기]
-						</c:if>
-					</c:when>
-							
-					<c:otherwise>
-						<c:choose>
-							<c:when test="${param.menu eq 'manage'}"> 
-								배송 완료
+							<c:when test="${ empty product.proTranCode || product.proTranCode eq '0'}">
+									판매 중 
 							</c:when>
 							
-						<c:otherwise>
-								품절 
+							<c:when test="${product.proTranCode eq '1' }">
+									판매완료
+									<c:if test="${param.menu =='manage'}">
+										[배송하기]
+									</c:if>
+							</c:when>
+							
+							<c:when test="${product.proTranCode eq '4' }">
+									주문 취소
+							</c:when>
+							
+							<c:otherwise>
+										<c:choose>
+													<c:when test="${param.menu eq 'manage'}"> 
+														배송 완료(품절)
+													</c:when>
+													
+													<c:otherwise>
+														품절 
+													</c:otherwise>
+										</c:choose>
 							</c:otherwise>
-						</c:choose>
-					</c:otherwise>
 				</c:choose> 
 				
 			<!-- 	<c:choose>

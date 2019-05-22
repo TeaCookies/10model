@@ -193,21 +193,18 @@ public class PurchaseController {
 	
 	@RequestMapping( value="cancelPurchase", method=RequestMethod.GET)
 	public String cancelPurchase( @ModelAttribute("purchase") Purchase purchase , 
-																//@RequestParam("tranNo") int tranNo ,
-																HttpServletRequest request,
+																@RequestParam("tranNo") int tranNo ,
 																Model model) throws Exception{
 		
 		System.out.println("/purchase/cancelPurchase : GET");
-		System.out.println(request.getParameter("tranNo"));
+	
+		Product product = productService.getProduct2(tranNo);
+		purchase = purchaseService.getPurchase(tranNo);
+		purchase.setTranCode("4");
+		purchaseService.updateTranCode(purchase);
 		
-		
-//		Product product = productService.getProduct2(tran);
-//		purchase = purchaseService.getPurchase(tran);
-//		purchase.setStatus("4");
-//		purchaseService.cancelPurchase(purchase);
-//		
-//		product.setProdQuantity(product.getProdQuantity()+purchase.getTranQuantity());
-//		productService.updateProdQuantity(product);
+		product.setProdQuantity(product.getProdQuantity()+purchase.getTranQuantity());
+		productService.updateProdQuantity(product);
 		
 		
 		//Business Logic
