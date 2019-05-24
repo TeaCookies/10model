@@ -49,7 +49,7 @@
 	</tr>
 	<tr>
 		<td>구매자연락처</td>
-		<td>${purchase.receiverPhone}</td>
+		<td>${purchase.receiverName}</td>
 		<td></td>
 	</tr>
 	<tr>
